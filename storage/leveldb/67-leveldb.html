@@ -58,6 +58,50 @@
 </script>
 
 
+<script type="text/x-red" data-template-name="leveldb stream">
+    <div class="form-row node-input-level">
+        <label for="node-input-level"><i class="fa fa-briefcase"></i> Database</label>
+        <input type="text" id="node-input-level">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="leveldb stream">
+    <p>Uses <a href="https://code.google.com/p/leveldb/" target="_new"><i>LevelDB</i></a> for a simple key value pair database.</p>
+    <p>Use this node to <b>stream</b>, or retrieve the data already saved in the database.</p>
+    <p>Optionally, you may set a <code>msg.query</code> object (via a function) to constrain the returned data. If not constrained,
+    this will return all data in the database.</p>
+    <p>See the <a href="https://github.com/Level/level#createreadstreamoptions" target="new"><i>stream docs</i></a> for available options.</p>
+    <p>The result is returned as a message sequence. If <code>msg.query.keys</code> or <code>msg.query.values</code> is set then the
+    result is returned in <code>msg.payload</code>. Otherwise the <i>key</i> is returned in <code>msg.topic</code> and the <i>value</i>
+    in <code>msg.payload</code>.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('leveldb stream',{
+        category: 'storage-input',
+        color:"#dbb84d",
+        defaults: {
+            level: {type:"leveldbase",required:true},
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "leveldb.png",
+        label: function() {
+            var levelNode = RED.nodes.node(this.level);
+            return this.name||(levelNode?levelNode.label():"leveldb");
+        },
+            labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        }
+    });
+</script>
+
+
 <script type="text/x-red" data-template-name="leveldb out">
     <div class="form-row node-input-level">
         <label for="node-input-level"><i class="fa fa-briefcase"></i> Database</label>
